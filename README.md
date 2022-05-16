@@ -56,4 +56,13 @@ To use the programs, clone the repository scripts:
 
 ```sh
 git clone https://github.com/GroverAruquipa/Embedded_digital_network_analyzer/
-```-
+```
+
+For an in-depth reference visit the following links:
+- http://jmfriedt.free.fr/
+- https://github.com/jmfriedt/gr-rpitx
+- https://www.youtube.com/c/GNURadioProject/videos
+- 
+
+
+
