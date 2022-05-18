@@ -1,0 +1,225 @@
+options:
+  parameters:
+    author: grover
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: no_gui
+    hier_block_src_path: '.:'
+    id: rpi_fm
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: rpi_fm
+    window_size: (1000,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [552, 68.0]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: f
+  id: variable
+  parameters:
+    comment: ''
+    value: 86.8e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1104, 72.0]
+    rotation: 0
+    state: true
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: 230e3
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [736, 100.0]
+    rotation: 0
+    state: enabled
+- name: analog_const_source_x_0
+  id: analog_const_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [256, 432.0]
+    rotation: 0
+    state: disabled
+- name: analog_noise_source_x_0
+  id: analog_noise_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    amp: '3.14'
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    noise_type: analog.GR_GAUSSIAN
+    seed: '0'
+    type: float
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [224, 312.0]
+    rotation: 0
+    state: disabled
+- name: analog_sig_source_x_0
+  id: analog_sig_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    amp: '0.4'
+    comment: because a signa 0 and 1 0.4 and 0.5
+    freq: '5000'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    offset: '0.5'
+    phase: '0'
+    samp_rate: samp_rate
+    type: complex
+    waveform: analog.GR_COS_WAVE
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [216, 116.0]
+    rotation: 0
+    state: enabled
+- name: blocks_float_to_complex_0
+  id: blocks_float_to_complex
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [592, 368.0]
+    rotation: 0
+    state: disabled
+- name: blocks_magphase_to_complex_0
+  id: blocks_magphase_to_complex
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [584, 288.0]
+    rotation: 0
+    state: disabled
+- name: rpitx_rpitx_sink_0
+  id: rpitx_rpitx_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    carrier_freq: f
+    comment: ''
+    samp_rate: samp_rate
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1088, 200.0]
+    rotation: 0
+    state: true
+- name: server_epy
+  id: epy_module
+  parameters:
+    alias: ''
+    comment: ''
+    source_code: "# this module will be imported in the into your flowgraph\nimport\
+      \ socket\nimport string\nimport sys\n\n\n\ndef jmf_server(tt):\n## pi=pigpio.pi()\n\
+      ## for gpioin in (21,20,26,16,19,13,5,6):\n##     pi.set_mode(g, gpio.OUTPUT)\n\
+      ##     pi.write(g, 0)\n    while True:\n        sock=socket.socket(socket.AF_INET,\
+      \ socket.SOCK_STREAM)\n        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR,\
+      \ 1)\n        sock.bind(('192.168.2.2', 4242))\n        print('Waitning for\
+      \ connection')\n        sock.listen(1)\n        conn, addr = sock.accept()\n\
+      \        with conn:\n            print('Connected by', addr)\n            while\
+      \ True:\n                data = conn.recv(1)\n                if data:\n   \
+      \                 data=data.decode()\n                    print(data)\n    \
+      \                if '*' in data:\n                        tt.f=tt.f+10000 #\
+      \ Frequency increment when receiving '*'\n                        tt.set_f(tt.f)\n\
+      \                        print(\"f:\"+str(tt.f))\n                    if '+'\
+      \ in data:\n                        tt.f=tt.f-10000 ## FREQUENCY increment when\
+      \ receiving '+'\n                        tt.set_f(tt.f)\n                  \
+      \      print(\"f:\"+str(tt.f))\n                    if 'q' in data:\n      \
+      \                  print('bye')\n                        sock.shutdown(socket.SHUT_RDWR)\n\
+      \                        sock.close()\n                        break\n\n"
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1152, 352.0]
+    rotation: 0
+    state: true
+- name: snippet_0
+  id: snippet
+  parameters:
+    alias: ''
+    code: 'print("Starting server" );
+
+      import threading
+
+      threading.Thread(target=server_epy.jmf_server, args=(self,)).start()'
+    comment: ''
+    priority: '0'
+    section: main_after_init
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [840, 428.0]
+    rotation: 0
+    state: true
+
+connections:
+- [analog_const_source_x_0, '0', blocks_float_to_complex_0, '1']
+- [analog_const_source_x_0, '0', blocks_magphase_to_complex_0, '0']
+- [analog_noise_source_x_0, '0', blocks_float_to_complex_0, '0']
+- [analog_noise_source_x_0, '0', blocks_magphase_to_complex_0, '1']
+- [analog_sig_source_x_0, '0', blocks_float_to_complex_0, '0']
+- [analog_sig_source_x_0, '0', rpitx_rpitx_sink_0, '0']
+- [blocks_float_to_complex_0, '0', rpitx_rpitx_sink_0, '0']
+- [blocks_magphase_to_complex_0, '0', rpitx_rpitx_sink_0, '0']
+
+metadata:
+  file_format: 1
