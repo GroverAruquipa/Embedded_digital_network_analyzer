@@ -1,5 +1,5 @@
 # Embedded_digital_network_analyzer
-In this repository the video is attached: https://youtu.be/972KyDgtxs4
+In this repository the video is attached: https://youtu.be/972KyDgtxs4 .
 The document corrected with thwlast results will be attached at soon possible.
 # Digital Network Analyzer
 ## _INTRODUCTION.- 
